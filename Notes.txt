@@ -83,11 +83,9 @@ Event Flow Summary
     5 - The logic inside the handler (e.g., sending an email, logging, etc.) is executed.
     6 - The events are then cleared from the entity.
 
+    learn ASP.NET Core push notifications OneSignal
 
   TODO:
-    event handler
     domain exceptions
     create roles app and api
     caching using redis
-    rate limiter
-    health check

@@ -29,7 +29,7 @@ namespace LinkNest.Domain.Posts
             // TODO: Validate parameters as needed and raise domain events or perform additional logic if needed
             var post = new Post(Guid.NewGuid(), content, DateTime.UtcNow, imageUrl, userProfileId);
 
-            post.RaiseDomainEvent(new PostCreatedEvent(post.Guid, content,DateTime.UtcNow, imageUrl, userProfileId));
+            post.RaiseDomainEvent(new PostCreatedDomainEvent(post.Guid, content,DateTime.UtcNow, imageUrl, userProfileId));
             return post;
 
         }
@@ -45,7 +45,7 @@ namespace LinkNest.Domain.Posts
         {
             if (comment == null) throw new ArgumentNullException(nameof(comment));
             Comments.Add(comment);
-            RaiseDomainEvent(new PostCommentAddedEvent(comment.Guid, comment.PostId, comment.UserProfileId, comment.Content, comment.CreatedAt));
+            RaiseDomainEvent(new PostCommentAddedDomainEvent(comment.Guid, comment.PostId, comment.UserProfileId, comment.Content, comment.CreatedAt));
         }
         public void RemoveComment(PostComment comment)
         {
@@ -61,7 +61,7 @@ namespace LinkNest.Domain.Posts
         {
             if (interaction == null) throw new ArgumentNullException(nameof(interaction));
             Interactions.Add(interaction);
-            RaiseDomainEvent(new PostInteractionAddedEvent(interaction.Guid, interaction.PostId, interaction.UserProfileId, interaction.CreatedAt));
+            RaiseDomainEvent(new PostInteractionAddedDomainEvent(interaction.Guid, interaction.PostId, interaction.UserProfileId, interaction.CreatedAt));
         }
         public void RemoveInteraction(PostInteraction interaction)
         {

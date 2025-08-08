@@ -7,5 +7,5 @@ using System.Threading.Tasks;
 
 namespace LinkNest.Domain.Posts.DomainEvents
 {
-    public record PostCreatedEvent(Guid postId,Content Content,DateTime createdAt, Url imageUrl, Guid userProfileId  ):IDomainEvent;
+    public record PostCreatedDomainEvent(Guid postId,Content Content,DateTime createdAt, Url imageUrl, Guid userProfileId  ):IDomainEvent;
 }
