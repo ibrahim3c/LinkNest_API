@@ -1,0 +1,93 @@
+﻿Validators 
+	how to execute them
+
+U can not make query or command for mulitple handlers
+
+in ngsql u should make the query like this 
+                SELECT
+                "Content" as Content, // "content"  or Content is wrong 
+                "CreatedAt" AS CreatedAt,
+                "UserProfileId" as UserProfileId
+                from "PostComment"
+                where "postId"=@PostId
+
+Please don't make the response class internal like this:
+    internal class GetPostInteractionsResponse
+    {
+        public Guid PostId { get; init; }
+        public List<InteractionInfo> InteractionInfos { get; init; }
+    }
+    Because when I try to return this response from the controller, it cannot be accessed.
+
+Make commands and queries public 
+Make data types of commands or queries is primtive  
+
+i don't understand validaion behavior :()
+
+
+
+
+/*
+    Flow Between Frontend and Backend
+    User Requests a Password Reset
+        Frontend:
+            User enters their email in a "Forgot Password" form.
+            Frontend sends a POST request to ForgotPasswordAsync endpoint with the email.
+        Backend (ForgotPasswordAsync)
+            Checks if the email exists.
+            Generates a password reset token.
+            Sends an email with a reset link (SendPasswordResetEmailAsync).
+            Returns a success message: "Please go to your email and reset your password".
+    User Clicks the Reset Link in Email
+        Frontend:
+            Extracts userId and code from the URL.
+            Displays a password reset form for the user to enter a new password.
+    User Submits the New Password
+        Frontend:
+            Sends a POST request to ResetPasswordAsync with userId, code, and newPassword.
+        Backend (ResetPasswordAsync)
+            Validates input.
+            Finds the user.
+            Decodes the reset token.
+            Resets the password using userManager.ResetPasswordAsync().
+            Returns a success message: "Password Reset successfully".
+    */
+
+
+Steps to implement Doamin Event
+    1 - in domain layer 
+        define IDomainEvent interface
+        add those in base class
+            public IReadOnlyList<IDomainEvent> GetDomainEvents() => _events;
+            public void RaiseDomainEvent(IDomainEvent domainEvent) => _events.Add(domainEvent);
+            public void ClearDomainEvents()=>_events.Clear();
+        in each domain layer define a record for specific event happen to it like when user created
+        so we will create record called UserCreatedDomainEvent :IDomainEvent
+        and we add to to the collection in the right time like in method of created after we create the user we will add this event
+    
+    2 - in application layer
+        define a handler of this domain event like UserCreatedDomainEventHandler:INotificationHandler<UserCreatedDomainEvent> 
+        and handlee this event for example send welcome to him
+
+    3 - In Infrastructure Layer (or Persistence Layer)
+        Modify AppDbContext to dispatch domain events after saving changes
+
+Event Flow Summary
+    1 - The domain logic raises a domain event by calling RaiseDomainEvent(...).
+    2 - The event is stored in a private _events list inside the entity.
+    3 - When SaveChangesAsync() is called in the DbContext:
+        It collects all domain events.
+        Saves changes to the database.
+        Then publishes the events via MediatR.
+    4 - MediatR automatically invokes the appropriate handler(s) for each domain event.
+    5 - The logic inside the handler (e.g., sending an email, logging, etc.) is executed.
+    6 - The events are then cleared from the entity.
+
+
+  TODO:
+    event handler
+    domain exceptions
+    create roles app and api
+    caching using redis
+    rate limiter
+    health check
