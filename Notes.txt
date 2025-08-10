@@ -87,5 +87,6 @@ Event Flow Summary
 
   TODO:
     domain exceptions
-    create roles app and api
-    caching using redis
+    learn ASP.NET Core push notifications OneSignal and use it
+    ChangeEmail and ChangePassword
+    authorization

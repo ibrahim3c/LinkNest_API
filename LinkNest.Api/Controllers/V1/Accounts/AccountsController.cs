@@ -1,5 +1,6 @@
 ﻿using LinkNest.Application.Abstraction.Helpers;
 using LinkNest.Application.Identity.ForgetPassword;
+using LinkNest.Application.Identity.LockUnLock;
 using LinkNest.Application.Identity.Login;
 using LinkNest.Application.Identity.RefreshToken;
 using LinkNest.Application.Identity.Register;
@@ -48,7 +49,6 @@ namespace LinkNest.Api.Controllers.V1.Accounts
             return Ok(result);
         }
 
-
         private void setRefreshTokenInCookie(string refreshToken, DateTime refreshTokenExpiresOn)
         {
             var cookieOptions = new CookieOptions
@@ -71,7 +71,6 @@ namespace LinkNest.Api.Controllers.V1.Accounts
             return Ok(result);
         }
 
-
         [HttpPost("reset-token")]
         public async Task<IActionResult> RevokeToken(string? refreshToken)
         {
@@ -82,7 +81,6 @@ namespace LinkNest.Api.Controllers.V1.Accounts
                 return BadRequest(result);
             return Ok(result);
         }
-
 
         [HttpPost("forgot-password")]
         public async Task<IActionResult> ForgotPassword(string email)
@@ -107,6 +105,16 @@ namespace LinkNest.Api.Controllers.V1.Accounts
             if (!result.IsSuccess)
                 return BadRequest(result);
             return Ok(result);
+        }
+
+        [HttpPost("LockUnLock/{id}")]
+        public async Task<IActionResult> LockUnLock(string id)
+        {
+            var command = new LockUnLockCommand(id);
+            var result = await sender.Send(command);
+            if (result.IsSuccess)
+                return Ok(result);
+            return BadRequest(result);
         }
 
     }

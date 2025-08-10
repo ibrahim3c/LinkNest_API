@@ -8,6 +8,7 @@ using LinkNest.Infrastructure.Auth;
 using LinkNest.Infrastructure.Data;
 using LinkNest.Infrastructure.Email;
 using LinkNest.Infrastructure.Repositories;
+using LinkNest.Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -97,6 +98,7 @@ namespace LinkNest.Infrastructure
             #region resolving
             services.AddScoped<ITokenGenerator, TokenGenerator>();
             services.AddScoped<IEmailService, EmailService>();
+            services.AddScoped<IRoleService, RoleService>();
 
             #endregion
 

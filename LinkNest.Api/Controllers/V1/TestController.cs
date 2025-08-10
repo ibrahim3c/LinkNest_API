@@ -1,30 +1,25 @@
-﻿using Asp.Versioning;
-using LinkNest.Application.Abstraction.IServices;
+﻿using LinkNest.Application.Abstraction.IServices;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 
-namespace LinkNest.Api.Controllers.V2
+namespace LinkNest.Api.Controllers.V1
 {
     [ApiController]
-    //[Route("posts/v{version:apiVersion}/[controller]")]
-    [Route("posts/[controller]")]
-    [ApiVersion("2.0")]
-    public class PostsController:ControllerBase
+    [Route("api/[controller]")]
+    public class TestController:ControllerBase
     {
         private readonly IEmailService emailService;
 
-        public PostsController(IEmailService emailService)
+        public TestController(IEmailService emailService)
         {
             this.emailService = emailService;
         }
-
         [HttpPost]
         public async Task<IActionResult> Test()
         {
             try
             {
 
-            await emailService.SendAsync("ihany941@gmail.com", "test", "for testing");
+                await emailService.SendAsync("ihany941@gmail.com", "test", "for testing");
                 return Ok();
             }
             catch (Exception ex)
