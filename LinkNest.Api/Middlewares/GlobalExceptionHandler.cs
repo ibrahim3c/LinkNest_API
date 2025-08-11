@@ -39,6 +39,13 @@ namespace LinkNest.Api.Middlewares
                 InvalidOperationException => ((int)HttpStatusCode.Conflict, "Invalid operation attempted."),
                 TimeoutException => ((int)HttpStatusCode.RequestTimeout, "The request timed out."),
                 NullReferenceException => ((int)HttpStatusCode.BadRequest, "A null reference occurred."),
+
+                LinkNest.Domain.UserProfiles.DomainExceptions.UserProfileNotValidException => ((int)HttpStatusCode.BadRequest, ex.Message),
+                LinkNest.Domain.Posts.DomainExceptions.PostNotValidDomainException => ((int)HttpStatusCode.BadRequest, ex.Message),
+                LinkNest.Domain.Posts.DomainExceptions.PostCommentNotValidDomainException => ((int)HttpStatusCode.BadRequest, ex.Message),
+                LinkNest.Domain.Posts.DomainExceptions.PostInteractionNotValidDomainException => ((int)HttpStatusCode.BadRequest, ex.Message),
+                LinkNest.Domain.Follows.DomainExceptions.FollowRequestNotValidDomainException => ((int)HttpStatusCode.BadRequest, ex.Message),
+                
                 LinkNest.Application.Abstraction.Excecption.ValidationException =>
                     ((int)HttpStatusCode.BadRequest, "Validation failed"),
                 _ => ((int)HttpStatusCode.InternalServerError, "An unexpected error occurred.")

@@ -1,5 +1,6 @@
 ﻿using LinkNest.Domain.Abstraction;
 using LinkNest.Domain.Follows.DomainEvents;
+using LinkNest.Domain.Follows.DomainExceptions;
 using LinkNest.Domain.UserProfiles;
 
 namespace LinkNest.Domain.Follows
@@ -15,8 +16,12 @@ namespace LinkNest.Domain.Follows
         }
         public Follow(Guid id, Guid followerId, Guid followeeId):base(id) 
         {
+            if (followerId == Guid.Empty)
+                throw new FollowRequestNotValidDomainException("Follower ID cannot be empty.");
+            if (followeeId == Guid.Empty)
+                throw new FollowRequestNotValidDomainException("Followee ID cannot be empty.");
             if (followerId == followeeId)
-                throw new ArgumentException("User cannot follow themselves.");
+                throw new FollowRequestNotValidDomainException("User cannot follow themselves.");
 
             this.FollowerId = followerId;
             this.FolloweeId = followeeId;

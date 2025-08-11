@@ -1,4 +1,5 @@
 ﻿using LinkNest.Domain.Abstraction;
+using LinkNest.Domain.Posts.DomainExceptions;
 
 namespace LinkNest.Domain.Posts
 {
@@ -21,6 +22,10 @@ namespace LinkNest.Domain.Posts
 
         public static PostInteraction Create(Guid postId, Guid userProfileId, InteractionTypes interactionType)
         {
+            if(postId == Guid.Empty) throw new PostInteractionNotValidDomainException("PostId cannot be empty.");
+            if(userProfileId == Guid.Empty) throw new PostInteractionNotValidDomainException("UserProfileId cannot be empty.");
+            if(!Enum.IsDefined(typeof(InteractionTypes), interactionType)) throw new PostInteractionNotValidDomainException("Invalid interaction type.");
+
             return new PostInteraction
             {
                 CreatedAt = DateTime.UtcNow,

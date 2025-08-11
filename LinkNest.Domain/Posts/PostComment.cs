@@ -1,4 +1,5 @@
 ﻿using LinkNest.Domain.Abstraction;
+using LinkNest.Domain.Posts.DomainExceptions;
 
 namespace LinkNest.Domain.Posts
 {
@@ -22,6 +23,10 @@ namespace LinkNest.Domain.Posts
 
         public static PostComment Create(Content content,Guid postId, Guid userProfileId)
         {
+            if (content == null) throw new PostCommentNotValidDomainException("Content cannot be null.");
+            if (userProfileId == Guid.Empty) throw new PostCommentNotValidDomainException("UserProfileId cannot be empty.");
+            if (postId == Guid.Empty) throw new PostCommentNotValidDomainException("PostId cannot be empty.");
+
             return new PostComment
             {
                 Content = content,
@@ -34,6 +39,8 @@ namespace LinkNest.Domain.Posts
 
         public void UpdateConent(Content content)
         {
+            if (content == null) throw new ArgumentNullException("Content cannot be null.");
+
             this.Content = content;
         }
     }

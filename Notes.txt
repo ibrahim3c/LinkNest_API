@@ -83,10 +83,27 @@ Event Flow Summary
     5 - The logic inside the handler (e.g., sending an email, logging, etc.) is executed.
     6 - The events are then cleared from the entity.
 
-    learn ASP.NET Core push notifications OneSignal
+
+there are two options to handle domain validation
+    1- use exceptions
+        so you can throw exception in domain layer and catch it in application layer and return it to the user
+        it is simple and easy to implement and easier debugging but less performance 
+        and recommeded to use custom exceptions like DomainException or ValidationException
+    2- use error objects
+        so you can return error object from domain layer and check it in application layer and return it to the user
+        i think this approach is better because it is more explicit and readable and better performance 
+        and you can return multiple errors at once but less debugging where no stack trace
+        and it is called Result or Result<T> pattern
+    we will use the first approach now and later we will use the second approach
+
+steps to implement handling domain validation using exceptions
+    1 - in domain layer
+        define a custom exception like DomainException or ValidationException
+        and throw it in the right place like when user tries to create a user with existing email
+    2 - in presentation layer
+        catch this exception using global exception handler and return it to the user
 
   TODO:
-    domain exceptions
     learn ASP.NET Core push notifications OneSignal and use it
-    ChangeEmail and ChangePassword
     authorization
+    solve the bug of sending email
