@@ -1,4 +1,5 @@
 ﻿using LinkNest.Domain.Abstraction;
+using LinkNest.Domain.Posts.DomainEvents;
 using LinkNest.Domain.Posts.DomainExceptions;
 
 namespace LinkNest.Domain.Posts
@@ -27,7 +28,7 @@ namespace LinkNest.Domain.Posts
             if (userProfileId == Guid.Empty) throw new PostCommentNotValidDomainException("UserProfileId cannot be empty.");
             if (postId == Guid.Empty) throw new PostCommentNotValidDomainException("PostId cannot be empty.");
 
-            return new PostComment
+            var commenet= new PostComment
             {
                 Content = content,
                 CreatedAt = DateTime.UtcNow,
@@ -35,6 +36,7 @@ namespace LinkNest.Domain.Posts
                 PostId=postId,
                 Guid= Guid.NewGuid()
             };
+            return commenet;
         }
 
         public void UpdateConent(Content content)

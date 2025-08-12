@@ -1,4 +1,5 @@
 ﻿using LinkNest.Domain.Abstraction;
+using LinkNest.Domain.Posts.DomainEvents;
 using LinkNest.Domain.Posts.DomainExceptions;
 
 namespace LinkNest.Domain.Posts
@@ -26,14 +27,15 @@ namespace LinkNest.Domain.Posts
             if(userProfileId == Guid.Empty) throw new PostInteractionNotValidDomainException("UserProfileId cannot be empty.");
             if(!Enum.IsDefined(typeof(InteractionTypes), interactionType)) throw new PostInteractionNotValidDomainException("Invalid interaction type.");
 
-            return new PostInteraction
+            var PostInteraction = new PostInteraction
             {
                 CreatedAt = DateTime.UtcNow,
                 PostId = postId,
                 InteractionType = interactionType,
                 UserProfileId = userProfileId,
-                Guid= Guid.NewGuid()
+                Guid = Guid.NewGuid()
             };
+            return PostInteraction;
         }
     }
 }

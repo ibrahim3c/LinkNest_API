@@ -11,6 +11,4 @@ namespace LinkNest.Domain.Follows.DomainExceptions
         {
         }
     }
-    {
-    }
 }

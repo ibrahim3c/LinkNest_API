@@ -80,5 +80,7 @@ namespace LinkNest.Domain.UserProfiles
             CurrentCity = currentCity;
         }
 
+        public string FullName => $"{FirstName.firstname} {LastName.lastname}";
+
     }
 }

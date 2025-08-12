@@ -49,7 +49,7 @@ namespace LinkNest.Domain.Posts
         {
             if (comment == null) throw new PostNotValidDomainException("Content cannot be null.");
             Comments.Add(comment);
-            RaiseDomainEvent(new PostCommentAddedDomainEvent(comment.Guid, comment.PostId, comment.UserProfileId, comment.Content, comment.CreatedAt));
+            RaiseDomainEvent(new PostCommentAddedDomainEvent( comment.PostId, comment.UserProfileId));
         }
         public void RemoveComment(PostComment comment)
         {
@@ -65,7 +65,7 @@ namespace LinkNest.Domain.Posts
         {
             if (interaction == null) throw new PostNotValidDomainException("Interaction cannot be null.");
             Interactions.Add(interaction);
-            RaiseDomainEvent(new PostInteractionAddedDomainEvent(interaction.Guid, interaction.PostId, interaction.UserProfileId, interaction.CreatedAt));
+            RaiseDomainEvent(new PostInteractionAddedDomainEvent(interaction.Guid, interaction.PostId, interaction.UserProfileId));
         }
         public void RemoveInteraction(PostInteraction interaction)
         {

@@ -1,4 +1,5 @@
-﻿using LinkNest.Domain.Abstraction;
+﻿using LinkNest.Application.Abstraction.IServices;
+using LinkNest.Domain.Abstraction;
 using LinkNest.Domain.Posts.DomainEvents;
 using MediatR;
 using System;
@@ -12,10 +13,12 @@ namespace LinkNest.Application.Posts.AddCommentToPost
     internal sealed class PostCommentAddedDomainEventHandler : INotificationHandler<PostCommentAddedDomainEvent>
     {
         private readonly IUnitOfWork unitOfWork;
+        private readonly IOneSignalService oneSignalService;
 
-        public PostCommentAddedDomainEventHandler(IUnitOfWork unitOfWork)
+        public PostCommentAddedDomainEventHandler(IUnitOfWork unitOfWork,IOneSignalService oneSignalService)
         {
             this.unitOfWork = unitOfWork;
+            this.oneSignalService = oneSignalService;
         }
         public async Task Handle(PostCommentAddedDomainEvent notification, CancellationToken cancellationToken)
         {
@@ -36,6 +39,14 @@ namespace LinkNest.Application.Posts.AddCommentToPost
                 return;
 
             // Step 4 : Send Notification 
+            // هنا ExternalUserId هو نفس UserId
+            var ExternalId = postOwnerId.ToString();
+
+            await oneSignalService.SendNotificationAsync(
+                ExternalId,
+                "New Comment on Your Post",
+               $"{commenter.FirstName} commented on your post."
+            );
         }
     }
 }

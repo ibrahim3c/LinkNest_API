@@ -2,5 +2,5 @@
 
 namespace LinkNest.Domain.Posts.DomainEvents
 {
-    public record PostCommentAddedDomainEvent(Guid commentId, Guid postId, Guid userProfileId, Content Content ,DateTime createdAt):IDomainEvent;
+    public record PostCommentAddedDomainEvent(Guid postId, Guid userProfileId):IDomainEvent;
 }

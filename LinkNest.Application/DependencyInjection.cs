@@ -1,13 +1,16 @@
 ﻿using FluentValidation;
 using LinkNest.Application.Common.Behaviors;
 using MediatR;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+
+
 
 namespace LinkNest.Application
 {
     public static class DependencyInjection
     {
-        public static IServiceCollection AddApplicationLayer(this IServiceCollection services)
+        public static IServiceCollection AddApplicationLayer(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddMediatR(config => config.RegisterServicesFromAssemblies(typeof(DependencyInjection).Assembly));
 
@@ -15,7 +18,6 @@ namespace LinkNest.Application
             services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
             services.AddValidatorsFromAssembly(typeof(DependencyInjection).Assembly,
                 includeInternalTypes: true);
-
 
             return services;
         }

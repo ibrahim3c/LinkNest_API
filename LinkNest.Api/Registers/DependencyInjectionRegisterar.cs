@@ -14,15 +14,14 @@ namespace LinkNest.Api.Registers
             //Add configuration from the secret.json file
             builder.Configuration.AddJsonFile("Secret.json", optional: false, reloadOnChange: true);
 
-            builder.Services.AddApplicationLayer();
+            builder.Services.AddApplicationLayer(builder.Configuration);
             builder.Services.AddInfrastructure(builder.Configuration);
+
             //serilog;
             builder.Host.UseSerilog((context, config) =>
             {                              // read configs from appsettigns
                 config.ReadFrom.Configuration(context.Configuration);
             });
-            //sendGrid
-            builder.Services.Configure<SendGridSettings>(builder.Configuration.GetSection("SendGridSettings")); 
 
 
         }

@@ -28,9 +28,12 @@ namespace LinkNest.Infrastructure
 
             var connectionString = configuration.GetConnectionString("DefaultConnection")
                 ??throw new ArgumentNullException(nameof(configuration));
-            //sendGrid
-           services.Configure<SendGridSettings>(configuration.GetSection("SendGridSettings"));
 
+            //TOD:
+            //sendGrid
+            services.Configure<SendGridSettings>(configuration.GetSection("SendGridSettings"));
+            //oneSignal
+            services.Configure<OneSignalOptions>(configuration.GetSection("OnOneSignal"));
 
             #region EFCore
             services.AddDbContext<AppDbContext>(options =>
@@ -99,6 +102,8 @@ namespace LinkNest.Infrastructure
             services.AddScoped<ITokenGenerator, TokenGenerator>();
             services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<IRoleService, RoleService>();
+            services.AddHttpClient<IOneSignalService, OneSignalService>();
+
 
             #endregion
 
