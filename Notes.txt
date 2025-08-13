@@ -103,7 +103,25 @@ steps to implement handling domain validation using exceptions
     2 - in presentation layer
         catch this exception using global exception handler and return it to the user
 
+steps to implement send notification using oneSignal: go to https://onesignal.com/ 
+    1- add in secret.json the oneSignal section containing the appId and apiKey
+    2- in application layer create a class to map the data in secret.json to this class to use it as a configuration
+    3- in application layer add IClass to send notification like INotificationService or IOneSignalService
+    4- in infrastructure layer implement this interface and use HttpClient to send the request to OneSignal API
+    5- i used this service in DomainEventHandlers to send notification such as when comment created
+
+steps to implement Permission Authorization 
+    1- in infra layer add in Auth folder 
+        HasPermissionAttribute Class
+        Permission Enum
+    2- assign the role to the user and assign specific permissions to the role
+        add Permission Table and its configuration file
+        add RolePermission Table and its configuration file
+        Seed the permissions in the database
+        Seed permissions to the roles in the database
+
   TODO:
-    learn ASP.NET Core push notifications OneSignal and use it
-    authorization
-    solve the bug of sending email
+    authorization 
+        seed RolePermissions
+    solve the bug of sending email and sending notifications and add cors configuration
+    test the app

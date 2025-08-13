@@ -2,8 +2,11 @@
 using LinkNest.Application.UserProfiles.GetAllUserProfiles;
 using LinkNest.Application.UserProfiles.GetUserProfile;
 using LinkNest.Application.UserProfiles.UpdateUserProfile;
+using LinkNest.Infrastructure.Auth;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security;
 
 namespace LinkNest.Api.Controllers.V1.UserProfiles
 {
@@ -18,6 +21,7 @@ namespace LinkNest.Api.Controllers.V1.UserProfiles
         {
             this.sender = sender;
         }
+
         [HttpGet]
         public async Task<IActionResult> GetAllUserProfiles()
         {
