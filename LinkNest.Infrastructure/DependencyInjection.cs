@@ -10,6 +10,7 @@ using LinkNest.Infrastructure.Email;
 using LinkNest.Infrastructure.Repositories;
 using LinkNest.Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -97,9 +98,22 @@ namespace LinkNest.Infrastructure
                          );
             #endregion
 
+            #region Permission Authorization
+            services.AddAuthorization(options =>
+            {
+                foreach (var perm in Enum.GetNames(typeof(Permission)))
+                {
+                    options.AddPolicy(perm, policy =>
+                        policy.Requirements.Add(new PermissionRequirement(perm)));
+                }
+            });
+            services.AddSingleton<IAuthorizationHandler,PermissionAuthorizationHandler>();
+
+            #endregion
 
             #region resolving
             services.AddScoped<ITokenGenerator, TokenGenerator>();
+            services.AddScoped<IPermissionService, PermissionService>();
             services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<IRoleService, RoleService>();
             services.AddHttpClient<IOneSignalService, OneSignalService>();

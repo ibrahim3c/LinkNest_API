@@ -15,23 +15,21 @@ namespace LinkNest.Infrastructure.Configurations
         {
             builder.HasMany(r => r.Permissions)
                 .WithMany()
-                .UsingEntity<AppRolePermission>();
+                .UsingEntity<AppRolePermission>(
+           j => j
+                .HasOne(rp => rp.Permission)
+                .WithMany()
+                .HasForeignKey(rp => rp.PermissionId),
+           j => j
+                .HasOne(rp => rp.Role)
+                .WithMany()
+                .HasForeignKey(rp => rp.RoleId),
+           j =>
+           {
+               j.HasKey(rp => new { rp.RoleId, rp.PermissionId });
+               j.ToTable("RolePermissions");
+           });
 
-            // or : and u don't have to define the AppRolePermission entity separately
-            //.UsingEntity<AppRolePermission>(
-            //   j => j
-            //        .HasOne<AppPermission>()
-            //        .WithMany()
-            //        .HasForeignKey(rp => rp.PermissionId),
-            //   j => j
-            //        .HasOne<AppRole>()
-            //        .WithMany()
-            //        .HasForeignKey(rp => rp.RoleId),
-            //   j =>
-            //   {
-            //       j.HasKey(rp => new { rp.RoleId, rp.PermissionId });
-            //       j.ToTable("RolePermissions");
-            //});
         }
     }
 }

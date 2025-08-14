@@ -15,14 +15,7 @@ namespace LinkNest.Infrastructure.Configurations
                 .IsRequired()
                 .HasMaxLength(256);
 
-            var perms = Enum.GetValues<Permission>()
-                .Select(p => new AppPermission
-                {
-                    Id = (int)p,
-                    Name = p.ToString()
-                });
 
-            builder.HasData(perms);
         }
     }
 }

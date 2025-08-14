@@ -118,7 +118,17 @@ steps to implement Permission Authorization
         add Permission Table and its configuration file
         add RolePermission Table and its configuration file
         Seed the permissions in the database
-        Seed permissions to the roles in the database
+        Seed permissions and roles permissions in the database using seeder classes
+    3- in infra layer add in auth foldere a handler to check the permission and there are two ways to handle 
+        1- using a permission service that checks the permission for the user in db
+            pros: always up to date u don't need to update the JWT token or wait refresh token
+            cons: more database calls and less performance                                                                                      
+        2- add permission to the user as claims when we generate JWT and check it in the handler
+            pros: less database calls and better performance
+            cons: need to update the JWT token or wait refresh token to update the permissions
+    4- using first approach u will add a IPermissionService interface in application layer and implement it in infrastructure layer
+        use this service in handler to check the permission for the user
+        add configuration of permission authorization in dependency injection in application layer
 
   TODO:
     authorization 

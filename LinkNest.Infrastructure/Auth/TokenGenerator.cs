@@ -36,7 +36,7 @@ namespace LinkNest.Infrastructure.Auth
                         new Claim(JwtRegisteredClaimNames.Sub, appUser.UserName),
                         new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                         new Claim(JwtRegisteredClaimNames.Email, appUser.Email),
-                        new Claim("uid", appUser.Id)
+                        new Claim(Constants.UserIdKey, appUser.Id)
                     }
             .Union(userClaims)
             .Union(roleClaims);

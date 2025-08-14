@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LinkNest.Infrastructure.Data
 {
-    internal sealed class AppDbContext : IdentityDbContext<AppUser, AppRole, string>
+    public sealed class AppDbContext : IdentityDbContext<AppUser, AppRole, string>
     {
         private readonly IPublisher publisher;
         public AppDbContext(DbContextOptions<AppDbContext> options, IPublisher publisher) : base(options)

@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LinkNest.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250813121329_addPermissionTableAndRolePermissionTable")]
-    partial class addPermissionTableAndRolePermissionTable
+    [Migration("20250814085159_AddPermissionAndRolePermission")]
+    partial class AddPermissionAndRolePermission
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -61,143 +61,6 @@ namespace LinkNest.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Permissions", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Account_Read"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Account_LockUnlock"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "Account_ResetPassword"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Name = "Account_ForgotPassword"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Name = "Auth_Login"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Name = "Auth_Register"
-                        },
-                        new
-                        {
-                            Id = 7,
-                            Name = "Auth_RefreshToken"
-                        },
-                        new
-                        {
-                            Id = 8,
-                            Name = "Auth_RevokeToken"
-                        },
-                        new
-                        {
-                            Id = 9,
-                            Name = "UserProfile_Read"
-                        },
-                        new
-                        {
-                            Id = 10,
-                            Name = "UserProfile_ReadAll"
-                        },
-                        new
-                        {
-                            Id = 11,
-                            Name = "UserProfile_Update"
-                        },
-                        new
-                        {
-                            Id = 12,
-                            Name = "Post_Read"
-                        },
-                        new
-                        {
-                            Id = 13,
-                            Name = "Post_ReadAll"
-                        },
-                        new
-                        {
-                            Id = 14,
-                            Name = "Post_Create"
-                        },
-                        new
-                        {
-                            Id = 15,
-                            Name = "Post_Update"
-                        },
-                        new
-                        {
-                            Id = 16,
-                            Name = "Post_Delete"
-                        },
-                        new
-                        {
-                            Id = 17,
-                            Name = "PostComment_Create"
-                        },
-                        new
-                        {
-                            Id = 18,
-                            Name = "PostComment_Read"
-                        },
-                        new
-                        {
-                            Id = 19,
-                            Name = "PostComment_Update"
-                        },
-                        new
-                        {
-                            Id = 20,
-                            Name = "PostComment_Delete"
-                        },
-                        new
-                        {
-                            Id = 21,
-                            Name = "PostInteraction_Create"
-                        },
-                        new
-                        {
-                            Id = 22,
-                            Name = "PostInteraction_Read"
-                        },
-                        new
-                        {
-                            Id = 23,
-                            Name = "PostInteraction_Delete"
-                        },
-                        new
-                        {
-                            Id = 24,
-                            Name = "Follow_Manage"
-                        },
-                        new
-                        {
-                            Id = 25,
-                            Name = "Follow_ReadFollowers"
-                        },
-                        new
-                        {
-                            Id = 26,
-                            Name = "Follow_ReadFollowees"
-                        },
-                        new
-                        {
-                            Id = 27,
-                            Name = "Role_Manage"
-                        });
                 });
 
             modelBuilder.Entity("LinkNest.Domain.Identity.AppRole", b =>
@@ -234,18 +97,9 @@ namespace LinkNest.Infrastructure.Migrations
                     b.Property<int>("PermissionId")
                         .HasColumnType("integer");
 
-                    b.Property<string>("AppRoleId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("PermissionsId")
-                        .HasColumnType("integer");
-
                     b.HasKey("RoleId", "PermissionId");
 
-                    b.HasIndex("AppRoleId");
-
-                    b.HasIndex("PermissionsId");
+                    b.HasIndex("PermissionId");
 
                     b.ToTable("RolePermissions", (string)null);
                 });
@@ -569,17 +423,21 @@ namespace LinkNest.Infrastructure.Migrations
 
             modelBuilder.Entity("LinkNest.Domain.Identity.AppRolePermission", b =>
                 {
-                    b.HasOne("LinkNest.Domain.Identity.AppRole", null)
+                    b.HasOne("LinkNest.Domain.Identity.AppPermission", "Permission")
                         .WithMany()
-                        .HasForeignKey("AppRoleId")
+                        .HasForeignKey("PermissionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LinkNest.Domain.Identity.AppPermission", null)
+                    b.HasOne("LinkNest.Domain.Identity.AppRole", "Role")
                         .WithMany()
-                        .HasForeignKey("PermissionsId")
+                        .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Permission");
+
+                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("LinkNest.Domain.Identity.AppUser", b =>
