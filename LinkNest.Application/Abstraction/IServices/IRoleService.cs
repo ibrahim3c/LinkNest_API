@@ -1,5 +1,5 @@
-﻿using LinkNest.Domain.Abstraction;
-using LinkNest.Infrastructure.Services.DTOs;
+﻿using LinkNest.Application.Abstraction.DTOs;
+using LinkNest.Domain.Abstraction;
 
 namespace LinkNest.Application.Abstraction.IServices
 {

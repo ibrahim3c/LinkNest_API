@@ -1,7 +1,7 @@
-﻿using LinkNest.Application.Abstraction.IServices;
+﻿using LinkNest.Application.Abstraction.DTOs;
+using LinkNest.Application.Abstraction.IServices;
 using LinkNest.Domain.Abstraction;
 using LinkNest.Domain.Identity;
-using LinkNest.Infrastructure.Services.DTOs;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 

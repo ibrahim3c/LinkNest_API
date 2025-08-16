@@ -110,7 +110,7 @@ steps to implement send notification using oneSignal: go to https://onesignal.co
     4- in infrastructure layer implement this interface and use HttpClient to send the request to OneSignal API
     5- i used this service in DomainEventHandlers to send notification such as when comment created
 
-steps to implement Permission Authorization 
+steps to implement Permission Authorization in https://youtube.com/playlist?list=PLYpjLpq5ZDGtJOHUbv7KHuxtYLk1nJPw5&si=-BmDOnxVdZYXFmJM
     1- in infra layer add in Auth folder 
         HasPermissionAttribute Class
         Permission Enum
@@ -126,12 +126,17 @@ steps to implement Permission Authorization
         2- add permission to the user as claims when we generate JWT and check it in the handler
             pros: less database calls and better performance
             cons: need to update the JWT token or wait refresh token to update the permissions
+                  and if  u have a large number of permissions it will increase the size of the token and this token will be sent in every request so it will increase the size of the request
     4- using first approach u will add a IPermissionService interface in application layer and implement it in infrastructure layer
         use this service in handler to check the permission for the user
         add configuration of permission authorization in dependency injection in application layer
+    4- using second approach u will go to function that generate jwt token and inject in its class IPermissionService and get the permissions for the user
+        and add them as claims to the token
+        and then check permission in claims of token in the handler
+    5- add custom provider for permission authorization in infra layer
+        and register it in dependency injection
+
 
   TODO:
-    authorization 
-        seed RolePermissions
     solve the bug of sending email and sending notifications and add cors configuration
     test the app

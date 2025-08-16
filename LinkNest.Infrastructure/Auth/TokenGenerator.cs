@@ -1,10 +1,12 @@
 ﻿using LinkNest.Application.Abstraction.Auth;
 using LinkNest.Application.Abstraction.Helpers;
+using LinkNest.Application.Abstraction.IServices;
 using LinkNest.Domain.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
+using System.Security;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
@@ -15,21 +17,31 @@ namespace LinkNest.Infrastructure.Auth
     {
         private readonly UserManager<AppUser> userManager;
         private readonly IOptionsMonitor<JWT> JWTConfigs;
+        private readonly IPermissionService permissionService;
 
-        public TokenGenerator(UserManager<AppUser> userManager,IOptionsMonitor<JWT>jWTConfigs)
+        public TokenGenerator(UserManager<AppUser> userManager,IOptionsMonitor<JWT>jWTConfigs,IPermissionService permissionService)
         {
             this.userManager = userManager;
             JWTConfigs = jWTConfigs;
+            this.permissionService = permissionService;
         }
         public async Task<string> GenerateJwtTokenAsync(AppUser appUser)
         {
 
             var userClaims = await userManager.GetClaimsAsync(appUser);
-            var roles = await userManager.GetRolesAsync(appUser);
-            var roleClaims = new List<Claim>();
+            //var roles = await userManager.GetRolesAsync(appUser);
+            //var roleClaims = new List<Claim>();
 
-            foreach (var role in roles)
-                roleClaims.Add(new Claim("roles", role));
+            //foreach (var role in roles)
+            //    roleClaims.Add(new Claim(Constants.RolesKey, role));
+
+            // Add permissions claims
+            var permClaims = new List<Claim>();
+            var permissions = await permissionService.GetPermissionsAsync(appUser.Id);
+            foreach (var permission in permissions)
+            {
+                permClaims.Add(new Claim(Constants.PermissionsKey, permission));
+            }
 
             var claims = new[]
             {
@@ -39,7 +51,8 @@ namespace LinkNest.Infrastructure.Auth
                         new Claim(Constants.UserIdKey, appUser.Id)
                     }
             .Union(userClaims)
-            .Union(roleClaims);
+            //.Union(roleClaims)
+            .Union(permClaims);
 
             var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JWTConfigs.CurrentValue.SecretKey));
             var signingCredentials = new SigningCredentials(symmetricSecurityKey, SecurityAlgorithms.HmacSha256);

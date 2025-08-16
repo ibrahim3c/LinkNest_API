@@ -99,16 +99,9 @@ namespace LinkNest.Infrastructure
             #endregion
 
             #region Permission Authorization
-            services.AddAuthorization(options =>
-            {
-                foreach (var perm in Enum.GetNames(typeof(Permission)))
-                {
-                    options.AddPolicy(perm, policy =>
-                        policy.Requirements.Add(new PermissionRequirement(perm)));
-                }
-            });
-            services.AddSingleton<IAuthorizationHandler,PermissionAuthorizationHandler>();
-
+            services.AddAuthorization();
+            services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
+            services.AddScoped<IAuthorizationHandler,PermissionAuthorizationHandler>();
             #endregion
 
             #region resolving

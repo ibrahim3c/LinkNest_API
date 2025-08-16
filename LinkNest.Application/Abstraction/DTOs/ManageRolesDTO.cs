@@ -1,4 +1,4 @@
-﻿namespace LinkNest.Infrastructure.Services.DTOs
+﻿namespace LinkNest.Application.Abstraction.DTOs
 {
     public class ManageRolesDTO
     {

@@ -1,5 +1,5 @@
-﻿using LinkNest.Application.Abstraction.IServices;
-using LinkNest.Infrastructure.Services.DTOs;
+﻿using LinkNest.Application.Abstraction.DTOs;
+using LinkNest.Application.Abstraction.IServices;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LinkNest.Api.Controllers.V1.Roles
@@ -10,9 +10,12 @@ namespace LinkNest.Api.Controllers.V1.Roles
     {
         private readonly IRoleService roleService;
 
-        public RolesController(IRoleService roleService)
+        public IPermissionService Permission { get; }
+
+        public RolesController(IRoleService roleService, IPermissionService permission)
         {
             this.roleService = roleService;
+            Permission = permission;
             this.roleService = roleService;
         }
 
@@ -102,6 +105,41 @@ namespace LinkNest.Api.Controllers.V1.Roles
             return BadRequest(result);
         }
 
+        [HttpPost("AddPermissionToRole/{roleId}")]
+        public async Task<IActionResult> AddPermissionToRoleAsync(string roleId, string permissionName)
+        {
+            var result = await Permission.AddPermissionToRoleAsync(roleId, permissionName);
+            if (result.IsSuccess)
+                return Ok(result);
+            return BadRequest(result);
+        }
+        [HttpDelete("RemovePermissionFromRole/{roleId}")]
+        public async Task<IActionResult> RemovePermissionFromRoleAsync(string roleId, string permissionName)
+        {
+            var result = await Permission.RemovePermissionFromRoleAsync(roleId, permissionName);
+            if (result.IsSuccess)
+                return Ok(result);
+            return BadRequest(result);
+        }
 
-    }
+        [HttpGet("GetPermissionsForManaging/{roleId}")]
+        public async Task<IActionResult> GetPermissionsForManagingAsync(string roleId)
+        {
+            var result = await Permission.GetPermissionsForManagingAsync(roleId);
+            if (result.IsSuccess)
+                return Ok(result);
+            return BadRequest(result);
+        }
+        [HttpPost("ManageUserPermissions")]
+        public async Task<IActionResult> ManageUserPermissionsAsync([FromBody] ManagePermissionsDTO managePermissionsDTO)
+        {
+            var result= await Permission.ManageUserRolesAsync(managePermissionsDTO);
+            if (result.IsSuccess)
+                return Ok(result);
+            return BadRequest(result);
+        }
+
+
+
+        }
 }
