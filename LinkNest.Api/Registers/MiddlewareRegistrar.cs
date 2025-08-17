@@ -14,7 +14,8 @@ namespace LinkNest.Api.Registers
                 app.UseSwaggerUI();
             }
             app.UseHttpsRedirection();
-            //app.UseMiddleware<GlobalExceptionHandler>();
+            app.UseMiddleware<CustomCorsMiddleware>();
+            app.UseMiddleware<GlobalExceptionHandler>();
             app.UseAuthorization();
 
 

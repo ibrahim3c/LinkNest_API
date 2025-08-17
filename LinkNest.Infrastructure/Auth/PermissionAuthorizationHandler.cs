@@ -33,6 +33,11 @@ namespace LinkNest.Infrastructure.Auth
         // second way using claims directly
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, PermissionRequirement requirement)
         {
+            if (context.User?.Identity?.IsAuthenticated != true)
+            {
+                return Task.CompletedTask;
+            }
+
             var permissions = context.User.Claims
                 .Where(c => c.Type == Constants.PermissionsKey)?
                 .Select(p => p.Value)

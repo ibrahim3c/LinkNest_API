@@ -41,7 +41,8 @@ namespace LinkNest.Infrastructure.Email
 
             if (!response.IsSuccessStatusCode)
             {
-                throw new Exception($"Failed to send email: {response.StatusCode}");
+                var errorMessage = await response.Body.ReadAsStringAsync();
+                throw new Exception($"Failed to send email: {response.StatusCode} - {errorMessage}");
             }
         }
     }

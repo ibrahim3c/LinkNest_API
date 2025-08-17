@@ -9,14 +9,16 @@ namespace LinkNest.Api.Controllers.V1
     public class TestController:ControllerBase
     {
         private readonly IEmailService emailService;
+        private readonly IOneSignalService oneSignalService;
 
-        public TestController(IEmailService emailService)
+        public TestController(IEmailService emailService,IOneSignalService oneSignalService)
         {
             this.emailService = emailService;
+            this.oneSignalService = oneSignalService;
         }
-        [HasPermission(Permission.PostInteraction_Create)]
+        [HasPermission(Permission.Post_Read)]
         [HttpPost]
-        public async Task<IActionResult> Test()
+        public async Task<IActionResult> TestEmail()
         {
             try
             {
@@ -28,6 +30,6 @@ namespace LinkNest.Api.Controllers.V1
             {
                 return BadRequest(ex.Message);
             }
-        }
+        }      
     }
 }

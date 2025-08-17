@@ -109,6 +109,8 @@ steps to implement send notification using oneSignal: go to https://onesignal.co
     3- in application layer add IClass to send notification like INotificationService or IOneSignalService
     4- in infrastructure layer implement this interface and use HttpClient to send the request to OneSignal API
     5- i used this service in DomainEventHandlers to send notification such as when comment created
+    note: we use userId as externalUserId in OneSignal API to identify the user and this id is registered when user registers in the app 
+    and this is resposibility of the frontend to register the user in OneSignal and get the externalUserId
 
 steps to implement Permission Authorization in https://youtube.com/playlist?list=PLYpjLpq5ZDGtJOHUbv7KHuxtYLk1nJPw5&si=-BmDOnxVdZYXFmJM
     1- in infra layer add in Auth folder 
@@ -136,7 +138,20 @@ steps to implement Permission Authorization in https://youtube.com/playlist?list
     5- add custom provider for permission authorization in infra layer
         and register it in dependency injection
 
+An AuthorizationHandler is always executed, even if the user is not authenticated.
+    That means inside your handler you should:
+        Check if the user is authenticated first.
+        If not → don’t call context.Succeed → the framework will return 401 Unauthorized.
+        Then check authorization (permissions/roles).
+        If the user is authenticated but missing permission → no context.Succeed → returns 403 Forbidden.
+        If the user has the required permission → call context.Succeed → access granted.
+    So:Handler must handle both Authentication and Authorization checks.
+
+
+if u get this error Unauthorized - {"errors":[{"message":"Maximum credits exceeded"}]}
+    it means that you have exceeded the number of requests to the API and you need to wait for a while or upgrade your plan
+    or use alternative API like Mailjet or SMTP erver like Gmail or Outlook 
+
 
   TODO:
-    solve the bug of sending email and sending notifications and add cors configuration
-    test the app
+  unit testing
