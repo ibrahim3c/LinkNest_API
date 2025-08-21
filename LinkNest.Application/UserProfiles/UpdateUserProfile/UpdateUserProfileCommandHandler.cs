@@ -4,7 +4,6 @@ using LinkNest.Domain.Abstraction;
 using LinkNest.Domain.Identity;
 using LinkNest.Domain.UserProfiles;
 using Microsoft.AspNetCore.Identity;
-using System.Diagnostics;
 
 namespace LinkNest.Application.UserProfiles.UpdateUserProfile
 {
@@ -22,7 +21,7 @@ namespace LinkNest.Application.UserProfiles.UpdateUserProfile
         {
             var user = await unitOfWork.userProfileRepo.GetByIdAsync(request.Id);
             if (user == null)
-                return Result.Failure(["No User Found"]);
+                return Result.Failure(["No User Profile Found"]);
 
             var isEmailTaken = await unitOfWork.userProfileRepo.IsEmailExist(request.Email, user.Email.email);
             if (isEmailTaken)
@@ -38,7 +37,7 @@ namespace LinkNest.Application.UserProfiles.UpdateUserProfile
             );
 
             var appUser = await userManager.FindByIdAsync(user.AppUserId);
-            if (user == null)
+            if (appUser == null)
                 return Result.Failure(["No User Found"]);
 
             var fullName = request.FirstName + request.LastName;

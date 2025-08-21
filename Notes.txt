@@ -152,6 +152,14 @@ if u get this error Unauthorized - {"errors":[{"message":"Maximum credits exceed
     it means that you have exceeded the number of requests to the API and you need to wait for a while or upgrade your plan
     or use alternative API like Mailjet or SMTP erver like Gmail or Outlook 
 
+in unit tests of application layer
+    u need to access the commands in app layer but this commands are internal 
+    so we add in app layer xml file this code so we can access them in unit tests
+	<ItemGroup>
+		<AssymblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+		    <_Parameter1>LinkNest.Application.UnitTests</_Parameter1>
+		</AssymblyAttribute>
+	</ItemGroup>
 
   TODO:
   unit testing
