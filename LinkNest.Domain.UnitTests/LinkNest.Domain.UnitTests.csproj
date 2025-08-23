@@ -17,17 +17,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\LinkNest.Application\LinkNest.Application.csproj" />
     <ProjectReference Include="..\LinkNest.Domain\LinkNest.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Using Include="Xunit" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Follows\" />
-    <Folder Include="Identity\" />
   </ItemGroup>
 
 </Project>
