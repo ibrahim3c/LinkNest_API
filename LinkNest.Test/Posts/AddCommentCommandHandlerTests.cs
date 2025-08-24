@@ -1,8 +1,11 @@
-﻿using LinkNest.Application.Posts.AddCommentToPost;
+﻿using ApartmentBooking.Domain.Users;
+using FluentAssertions;
+using LinkNest.Application.Posts.AddCommentToPost;
 using LinkNest.Domain.Abstraction;
 using LinkNest.Domain.Posts;
 using LinkNest.Domain.UserProfiles;
 using Moq;
+using NSubstitute;
 
 namespace LinkNest.Application.UnitTests.Posts
 {
@@ -63,22 +66,16 @@ namespace LinkNest.Application.UnitTests.Posts
         {
             // Arrange
             var command = new AddCommentCommand("Test content", Guid.NewGuid(), Guid.NewGuid());
-            var postMock = new Mock<Post>(Guid.NewGuid(), null, DateTime.UtcNow, null, Guid.NewGuid());
-            var userMock = new Mock<UserProfile>(Guid.NewGuid(), null, null, null, DateTime.UtcNow, DateTime.UtcNow, null);
-            var commentGuid = Guid.NewGuid();
+            var post=new Post(Guid.NewGuid(), new Content("Original Post"), DateTime.UtcNow, new Url("http://example.com/image.jpg"), Guid.NewGuid());
+            var userProfile = UserProfile.Create(
+                new FirstName("John"),
+                new LastName("Doe"),
+                new UserProfileEmail("test@gmail.com"), new DateTime(1990, 1, 1), new CurrentCity("New York"), "appUserId1");
 
-            var commentMock = new Mock<PostComment>();
-            commentMock.SetupGet(c => c.Guid).Returns(commentGuid);
 
-            _postRepoMock.Setup(r => r.GetByIdAsync(command.PostId)).ReturnsAsync(postMock.Object);
-            _userProfileRepoMock.Setup(r => r.GetByIdAsync(command.UserProfileId)).ReturnsAsync(userMock.Object);
+                _postRepoMock.Setup(r => r.GetByIdAsync(command.PostId)).ReturnsAsync(post);
+            _userProfileRepoMock.Setup(r => r.GetByIdAsync(command.UserProfileId)).ReturnsAsync(userProfile);
 
-            // Use reflection to call the static Create method
-            typeof(PostComment)
-                .GetMethod("Create")
-                ?.Invoke(null, new object[] { new Content(command.Content), command.PostId, command.UserProfileId });
-
-            postMock.Setup(p => p.AddComment(It.IsAny<PostComment>()));
 
             _unitOfWorkMock.Setup(u => u.SaveChangesAsync()).ReturnsAsync(1);
 
@@ -86,9 +83,8 @@ namespace LinkNest.Application.UnitTests.Posts
             var result = await _handler.Handle(command, CancellationToken.None);
 
             // Assert
-            Assert.True(result.IsSuccess);
-            // Can't check the exact Guid unless Create is mocked, so just check it's not empty
-            Assert.NotEqual(Guid.Empty, result.Value);
+            result.IsSuccess.Should().BeTrue();
+            _unitOfWorkMock.Verify(u => u.SaveChangesAsync(), Times.Once);
         }
     }
 

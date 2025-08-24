@@ -161,5 +161,8 @@ in unit tests of application layer
 		</AssymblyAttribute>
 	</ItemGroup>
 
-  TODO:
-  unit testing
+    we did unit test for domain layer and application layer
+    and u can use for mocking framework like Moq or NSubstitute( recommended from someone)
+        in NSubstitute he define repos interfaces and named for ex IUserRepository userRepositoryMock 
+        and in constructor he did this.userRepositoryMock=Substitute.For<IUserRepository>()
+        and then in each test he can setup the mock like this userRepositoryMock.GetByIdAsync(userId).Returns(user)

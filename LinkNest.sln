@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LinkNest.Application", "Lin
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LinkNest.Infrastructure", "LinkNest.Infrastructure\LinkNest.Infrastructure.csproj", "{D1266689-32D9-4C9F-8771-87E5D07E94AF}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8EC462FD-D22E-90A8-E5CE-7E832BA40C5D}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Notes", "Notes", "{8EC462FD-D22E-90A8-E5CE-7E832BA40C5D}"
 	ProjectSection(SolutionItems) = preProject
 		Notes.txt = Notes.txt
 	EndProjectSection
@@ -21,6 +21,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LinkNest.Application.UnitTests", "LinkNest.Test\LinkNest.Application.UnitTests.csproj", "{3D8538F4-0773-4487-A705-18AEC41CC7C4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LinkNest.Domain.UnitTests", "LinkNest.Domain.UnitTests\LinkNest.Domain.UnitTests.csproj", "{0103602E-4AA2-416E-AF5D-2AD76DCF41D6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{C2F66737-89FB-4E04-AC00-3E429D36DF38}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,6 +59,10 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{559B1681-8780-4CF0-BC1B-B2B83831B143} = {C2F66737-89FB-4E04-AC00-3E429D36DF38}
+		{2F990089-E535-459D-BB26-0895AB908BD5} = {C2F66737-89FB-4E04-AC00-3E429D36DF38}
+		{99B80554-DE8A-4BE5-AC2F-21F8BAC52FA5} = {C2F66737-89FB-4E04-AC00-3E429D36DF38}
+		{D1266689-32D9-4C9F-8771-87E5D07E94AF} = {C2F66737-89FB-4E04-AC00-3E429D36DF38}
 		{3D8538F4-0773-4487-A705-18AEC41CC7C4} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{0103602E-4AA2-416E-AF5D-2AD76DCF41D6} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
