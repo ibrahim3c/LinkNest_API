@@ -53,7 +53,7 @@ LinkNest
 - **UserProfile** – Represents a user’s profile with identity and personal details.  
 - **Post** – Represents user-generated posts with content & images.  
 - **PostComment** – Represents a comment, linked to a post and user.  
-- **Like** – Represents a like on a post.  
+- **Interaction** – Represents an interaction (like,love,..) on a post.  
 - **Follow** – Represents following relationships; emits domain events.  
 - **Domain Events** – Signal important business actions (e.g., profile updated, follow created).  
 
