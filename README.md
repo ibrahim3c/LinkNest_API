@@ -72,3 +72,9 @@ LinkNest
 ```bash
 git clone https://github.com/your-username/LinkNest.git
 cd LinkNest
+```
+## 🔗 API Demo  
+
+You can explore and test the API using the built-in Swagger UI:  
+
+👉 [https://linknest.runasp.net/swagger/index.html]
